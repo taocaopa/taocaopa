@@ -1,0 +1,13 @@
+# GitHub Profile
+update.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Temp files
+*.tmp
+*.temp

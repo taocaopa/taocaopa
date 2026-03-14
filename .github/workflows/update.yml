@@ -1,0 +1,26 @@
+name: Profile Update
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Update README with latest stats
+      run: |
+        echo "Last Updated: $(date)" >> update.log
+    
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add update.log
+        git commit -m "chore: update profile stats" || exit 0
+        git push
