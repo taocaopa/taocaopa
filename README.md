@@ -251,10 +251,28 @@ I'm actively exploring:
 - [💻 Development Guide with TDD](https://github.com/taocaopa/nanobot-health-assistant/blob/main/docs/development/development-guide.md)
 - [🎓 AI Engineer Training Program](https://github.com/taocaopa/nanobot-health-assistant/blob/main/docs/training/engineer-training.md)
 
-### Blog Posts (Coming Soon)
-- "Building Production-Ready Agentic AI Systems"
-- "RAG for Healthcare: Challenges and Solutions"
-- "From OpenClaw to NanoBot: Lessons in AI Framework Design"
+### Featured Blog Posts
+
+📝 **Building Production-Ready Agentic AI Systems**
+*From Prototype to Production: Lessons from Deploying Multi-Agent Systems at Scale*
+- Multi-agent orchestration patterns
+- Error recovery and observability
+- Production deployment strategies
+- [Read Article →](https://github.com/taocaopa/blog-posts/blob/main/building-production-ready-agentic-ai-systems.md)
+
+📝 **RAG for Healthcare: Challenges and Solutions**
+*Implementing Retrieval-Augmented Generation in Clinical Environments*
+- Medical knowledge base construction
+- HIPAA compliance in RAG systems
+- Handling contradictory evidence
+- [Read Article →](https://github.com/taocaopa/blog-posts/blob/main/rag-for-healthcare-challenges-and-solutions.md)
+
+📝 **From OpenClaw to NanoBot: Lessons in AI Framework Design**
+*A Technical Deep Dive into Building Agent Frameworks*
+- Framework architecture evolution
+- Safety-first design principles
+- Async vs. Sync decision making
+- [Read Article →](https://github.com/taocaopa/blog-posts/blob/main/from-openclaw-to-nanobot-framework-design.md)
 
 ---
 
