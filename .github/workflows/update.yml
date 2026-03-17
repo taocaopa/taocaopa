@@ -6,7 +6,6 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
-# FIX: Add required permissions for pushing to repo
 permissions:
   contents: write
 
@@ -15,23 +14,34 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    # FIX: Upgrade from v3 to v4 (Node.js 20 deprecation)
     - uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 0
     
-    - name: Update README with latest stats
+    - name: Update README with last updated timestamp
       run: |
-        echo "Last Updated: $(date)" >> update.log
+        # Get current date in nice format
+        DATE=$(date '+%Y-%m-%d %H:%M:%S UTC')
+        
+        # Check if README already has a last updated line
+        if grep -q "<!-- LAST_UPDATED:" README.md; then
+          # Replace existing timestamp
+          sed -i "s/<!-- LAST_UPDATED:.*-->/<!-- LAST_UPDATED: $DATE -->/" README.md
+        else
+          # Add timestamp at the end of README
+          echo "" >> README.md
+          echo "---" >> README.md
+          echo "" >> README.md
+          echo "🤖 **Last Updated**: $DATE via GitHub Actions" >> README.md
+          echo "<!-- LAST_UPDATED: $DATE -->" >> README.md
+        fi
     
-    # FIX: Configure git and handle .gitignore issue
     - name: Configure Git
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
     
-    # FIX: Check if there are changes
     - name: Check for changes
       id: verify-changed-files
       run: |
@@ -41,12 +51,11 @@ jobs:
           echo "changed=false" >> $GITHUB_OUTPUT
         fi
     
-    # FIX: Use -f (force) because update.log is in .gitignore
     - name: Commit changes
       if: steps.verify-changed-files.outputs.changed == 'true'
       run: |
-        git add -f update.log
-        git commit -m "chore: update profile stats"
+        git add README.md
+        git commit -m "docs: update last updated timestamp"
     
     - name: Push changes
       if: steps.verify-changed-files.outputs.changed == 'true'
