@@ -6,21 +6,49 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+# FIX: Add required permissions for pushing to repo
+permissions:
+  contents: write
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    # FIX: Upgrade from v3 to v4 (Node.js 20 deprecation)
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
     
     - name: Update README with latest stats
       run: |
         echo "Last Updated: $(date)" >> update.log
     
-    - name: Commit changes
+    # FIX: Configure git and handle .gitignore issue
+    - name: Configure Git
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add update.log
-        git commit -m "chore: update profile stats" || exit 0
-        git push
+    
+    # FIX: Check if there are changes
+    - name: Check for changes
+      id: verify-changed-files
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+    
+    # FIX: Use -f (force) because update.log is in .gitignore
+    - name: Commit changes
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      run: |
+        git add -f update.log
+        git commit -m "chore: update profile stats"
+    
+    - name: Push changes
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      run: |
+        git push origin ${{ github.ref_name }}
